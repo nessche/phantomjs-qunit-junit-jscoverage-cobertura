@@ -60,8 +60,13 @@ var Coverage = {
 				function() {
 					Coverage.createReports();
 					Coverage.fs.removeTree( Config.target );
-					
-					phantom.exit( 0 );
+					var exitCode = 0;
+					if (JUnit.hasFailures && (Config.ignoreFailures === false)) {
+						console.log("Test failures detected and ignoreFailures is set to false");
+						console.log("Breaking the build")
+						exitCode = 1;
+					}
+					phantom.exit( exitCode );
 				}, 60000);
 			}
 		});

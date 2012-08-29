@@ -3,6 +3,13 @@
  */
 var JUnit = {
 	
+	hasFailures: function( page ) {
+		var report = page.evaluate( function() {
+			return getReport();
+		})
+		return report.failures > 0;
+	},
+	
 	/**
 	 * @param page
 	 */
