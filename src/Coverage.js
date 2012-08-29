@@ -58,10 +58,11 @@ var Coverage = {
 					return Coverage.isTestCompeted();
 				},
 				function() {
+					var exitCode = 0;
 					Coverage.createReports();
 					Coverage.fs.removeTree( Config.target );
-					var exitCode = 0;
-					if (JUnit.hasFailures && (Config.ignoreFailures === false)) {
+					
+					if ((JUnit.hasFailures === true) && (Config.ignoreFailures === false)) {
 						console.log("Test failures detected and ignoreFailures is set to false");
 						console.log("Breaking the build")
 						exitCode = 1;

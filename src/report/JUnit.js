@@ -3,12 +3,7 @@
  */
 var JUnit = {
 	
-	hasFailures: function( page ) {
-		var report = page.evaluate( function() {
-			return getReport();
-		})
-		return report.failures > 0;
-	},
+	hasFailures: false,
 	
 	/**
 	 * @param page
@@ -22,6 +17,10 @@ var JUnit = {
 			
 		lines.push( "<?xml version='1.0' encoding='UTF-8'?>" );
 		lines.push( "<testsuite tests='" + report.count + "' failures='" + report.failures + "' disabled='0' errors='0' time='" + ( report.time / 1000 ) + "' name='tests'>" );
+		
+		if (report.failures > 0) {
+			this.hasFailures = true;
+		}
 		
 		for( var moduleName in report.modules ) {
 			var module = report.modules[ moduleName ];
