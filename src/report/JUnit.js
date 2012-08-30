@@ -16,7 +16,7 @@ var JUnit = {
 		var lines = [];
 			
 		lines.push( "<?xml version='1.0' encoding='UTF-8'?>" );
-		lines.push( "<testsuite tests='" + report.count + "' failures='" + report.failures + "' disabled='0' errors='0' time='" + ( report.time / 1000 ) + "' name='tests'>" );
+		lines.push( "<testsuites tests='" + report.count + "' failures='" + report.failures + "' disabled='0' errors='0' time='" + ( report.time / 1000 ) + "' name='tests'>" );
 		
 		if (report.failures > 0) {
 			this.hasFailures = true;
@@ -30,13 +30,17 @@ var JUnit = {
 			for( var testName in module.tests ) {
 				var test = module.tests[ testName ];
 				
-				lines.push( "\t\t<testcase name='" + testName + "' status='" + ( test.success ? "pass" : "fail" ) + "' time='" + ( test.time / 1000 ) + "' classname='" + moduleName + "' />" );
-			}
+				lines.push( "\t\t<testcase name='" + testName + "' status='" + ( test.success ? "pass" : "fail" ) + "' time='" + ( test.time / 1000 ) + "' classname='" + moduleName + "'>" );
+				if (! test.success) {
+					var failure = test.failures[0];
+					lines.push("\t\t\t<failure message='" + failure.message + "' type='" + failure.type + "'/>")
+				}
+				lines.push("\t\t</testcase>")			}
 			
 			lines.push( "\t</testsuite>" );
 		}
 		
-		lines.push( "</testsuite>" );
+		lines.push( "</testsuites>" );
 		
 		console.log( "Tests completed (" + report.count + "): " + report.time + "ms." );
 		console.log( "\t" + report.passed + " passed" );
